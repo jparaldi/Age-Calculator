@@ -1,4 +1,5 @@
 import { useState } from "react";
+import "./CalculadoraIdade.css";
 
 export default function CalculadoraIdade() {
   const [dia, setDia] = useState("");
@@ -64,6 +65,7 @@ export default function CalculadoraIdade() {
     <div className="calculadora-container">
       <div className="inputs-container">
         <div className="input-grupo">
+          <label>Day</label>
           <input
             type="text"
             placeholder="Dia"
@@ -71,6 +73,7 @@ export default function CalculadoraIdade() {
             onChange={(e) => setDia(e.target.value)}
             className="input-field"
           />
+          <label>Month</label>
           <input
             type="text"
             placeholder="Mês"
@@ -78,6 +81,7 @@ export default function CalculadoraIdade() {
             onChange={(e) => setMes(e.target.value)}
             className="input-field"
           />
+          <label>Year</label>
           <input
             type="text"
             placeholder="Ano"
@@ -87,7 +91,6 @@ export default function CalculadoraIdade() {
           />
         </div>
         <button onClick={calcularIdade} className="calcular-button">
-          Calcular
         </button>
         {erro && <p className="erro-mensagem">{erro}</p>}
         {idade && (

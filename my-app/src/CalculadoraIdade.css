@@ -1,0 +1,82 @@
+
+body {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    background-color: #ececec;
+}
+
+.calculadora-container {
+    background: white;
+    width: 200;
+    height: 800;
+    border-radius: 0 0 40px 0;
+    padding: 40px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+    width: 420px;
+    text-align: center;
+}
+
+
+.inputs-container {
+    height: 50px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 15px;
+    margin-bottom: 20px;
+    justify-content: space-between;
+    height: 250px; 
+}
+
+.input-grupo {
+    display: flex;
+    flex-direction: row;
+    align-items: column;
+    gap: 5px;
+    align-items: flex-start;
+}
+
+label {
+    font-size: 14px;
+    font-weight: bold;
+    color: #666;
+    flex-direction: column;
+}
+
+.input-field {
+    width: 80px;
+    padding: 10px;
+    border: solid #ccc; 
+    border-radius: 10px;
+    font-size: 18px;
+    text-align: center;
+}
+
+.input-field:focus {
+    border-color: #7f5af0;
+    outline: none;
+}
+
+
+.calcular-button {
+    width: 60px;
+    height: 60px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: black;
+    border-radius: 50%;
+    border: none;
+    cursor: pointer;
+    background-image: url('../public/icone-but.svg');
+}
+
+.calcular-button img {
+    width: 30px; 
+    height: auto;
+}
+
+
+
