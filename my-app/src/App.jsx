@@ -61,39 +61,42 @@ export default function CalculadoraIdade() {
   }
 
   return (
-    <div>
-      <div>
-        <div>
-          <div>
-            <input
-              type="text"
-              placeholder="Dia"
-              value={dia}
-              onChange={(e) => setDia(e.target.value)}
-            />
-            <input
-              type="text"
-              placeholder="Mês"
-              value={mes}
-              onChange={(e) => setMes(e.target.value)}
-            />
-            <input
-              type="text"
-              placeholder="Ano"
-              value={ano}
-              onChange={(e) => setAno(e.target.value)}
-            />
-          </div>
-          <button onClick={calcularIdade}>Calcular</button>
-          {erro && <p>{erro}</p>}
-          {idade && (
-            <div>
-              <p>{idade.anos} anos</p>
-              <p>{idade.meses} meses</p>
-              <p>{idade.dias} dias</p>
-            </div>
-          )}
+    <div className="calculadora-container">
+      <div className="inputs-container">
+        <div className="input-grupo">
+          <input
+            type="text"
+            placeholder="Dia"
+            value={dia}
+            onChange={(e) => setDia(e.target.value)}
+            className="input-field"
+          />
+          <input
+            type="text"
+            placeholder="Mês"
+            value={mes}
+            onChange={(e) => setMes(e.target.value)}
+            className="input-field"
+          />
+          <input
+            type="text"
+            placeholder="Ano"
+            value={ano}
+            onChange={(e) => setAno(e.target.value)}
+            className="input-field"
+          />
         </div>
+        <button onClick={calcularIdade} className="calcular-button">
+          Calcular
+        </button>
+        {erro && <p className="erro-mensagem">{erro}</p>}
+        {idade && (
+          <div className="resultado-container">
+            <p>{idade.anos} anos</p>
+            <p>{idade.meses} meses</p>
+            <p>{idade.dias} dias</p>
+          </div>
+        )}
       </div>
     </div>
   );
