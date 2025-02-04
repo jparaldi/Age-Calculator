@@ -1,5 +1,5 @@
 import { useState } from "react";
-import "./CalculadoraIdade.css";
+import "./App.css";
 
 export default function CalculadoraIdade() {
   const [dia, setDia] = useState("");
