@@ -5,43 +5,73 @@ export default function CalculadoraIdade() {
   const [dia, setDia] = useState("");
   const [mes, setMes] = useState("");
   const [ano, setAno] = useState("");
-  const [idade, setIdade] = useState(null);
-  const [erro, setErro] = useState("");
+  const [idade, setIdade] = useState({ anos: "--", meses: "--", dias: "--" });
+  const [erro, setErro] = useState({dia: "", mes: "", ano: ""});
+
+  function validarCampo (nomeCampo, valor){
+
+    let mensagemErro = "";
+
+    if (!valor) {
+      mensagemErro = "This field is required.";
+    }
+    if (nomeCampo === "dia" && (isNaN(valor) || valor < 1 || valor > 31)) {
+      mensagemErro = "Must be a valid day";
+    }
+    if (nomeCampo === "mes" && (isNaN(valor) || valor < 1 || valor > 12)) {
+      mensagemErro = "Must be a valid month";
+    }
+    if (nomeCampo === "ano" && (isNaN(valor) || valor > new Date().getFullYear())) {
+      mensagemErro = "Must be in the past";
+    }
+    
+    setErro((prev) => ({...prev, [nomeCampo]: mensagemErro}));
+  }
+
+  function validarFormulario() {
+    return dia && mes && ano && !erro.dia && !erro.mes && !erro.ano;
+  }
 
   function calcularIdade() {
-    setErro("");
+
+    if(!validarFormulario()){
+      return;
+    }
+
+    let ErrosForms = ({dia: "", mes: "", ano: ""});
     const diaNum = parseInt(dia, 10);
     const mesNum = parseInt(mes, 10);
     const anoNum = parseInt(ano, 10);
     
-    if (!dia || !mes || !ano) {
-      setErro("Todos os campos são obrigatórios.");
-      return;
+    if (!dia) {
+      ErrosForms.dia = "This field is required.";
     }
-    if (isNaN(diaNum) || isNaN(mesNum) || isNaN(anoNum)) {
-      setErro("Digite apenas números.");
-      return;
+    if (!mes) {
+      ErrosForms.mes = "This field is required.";
     }
-    if (diaNum < 1 || diaNum > 31) {
-      setErro("O dia deve estar entre 1 e 31.");
-      return;
+    if (!ano) {
+      ErrosForms.ano = "This field is required.";
     }
-    if (mesNum < 1 || mesNum > 12) {
-      setErro("O mês deve estar entre 1 e 12.");
-      return;
-    }
+
     const dataNascimento = new Date(anoNum, mesNum - 1, diaNum);
     if (
       dataNascimento.getDate() !== diaNum ||
       dataNascimento.getMonth() !== mesNum - 1 ||
       dataNascimento.getFullYear() !== anoNum
     ) {
-      setErro("Data inválida.");
+      ErrosForms.getDate = "Must be a valid day";
+      ErrosForms.getMonth = "Must be a valid month";
+      ErrosForms.getFullYear = "Must be in the past";
+    }
+
+    if (Object.values(ErrosForms).some(err => err !== "")) {
+      setErro(ErrosForms);
       return;
     }
+
     const hoje = new Date();
     if (dataNascimento > hoje) {
-      setErro("A data não pode ser maior que a atual.");
+      setErro("The birth date must be in the past.");
       return;
     }
     
@@ -58,49 +88,67 @@ export default function CalculadoraIdade() {
       meses += 12;
     }
     
+    setErro({dia: "", mes: "", ano: ""});
     setIdade({ anos, meses, dias });
   }
 
   return (
     <div className="calculadora-container">
       <div className="inputs-container">
-        <div className="input-grupo">
-          <label>Day</label>
+        <div className="input-Item">
+          <label className={erro.dia ? "label-erro" : ""}>DAY</label>
           <input
             type="text"
-            placeholder="Dia"
+            placeholder="Day"
             value={dia}
-            onChange={(e) => setDia(e.target.value)}
-            className="input-field"
+            onChange={(e) => {
+              setDia(e.target.value)
+              validarCampo("dia", e.target.value)
+            }}
+            className = {erro.dia ? "input-field erro" : "input-field"}
           />
-          <label>Month</label>
-          <input
-            type="text"
-            placeholder="Mês"
-            value={mes}
-            onChange={(e) => setMes(e.target.value)}
-            className="input-field"
-          />
-          <label>Year</label>
-          <input
-            type="text"
-            placeholder="Ano"
-            value={ano}
-            onChange={(e) => setAno(e.target.value)}
-            className="input-field"
-          />
+          {erro.dia && <span className="erro-message">{erro.dia}</span>}
         </div>
-        <button onClick={calcularIdade} className="calcular-button">
-        </button>
-        {erro && <p className="erro-mensagem">{erro}</p>}
-        {idade && (
-          <div className="resultado-container">
-            <p>{idade.anos} anos</p>
-            <p>{idade.meses} meses</p>
-            <p>{idade.dias} dias</p>
-          </div>
-        )}
+        <div className="input-Item">
+          <label className={erro.mes ? "label-erro" : ""}>MONTH</label>
+          <input
+            type="text"
+            placeholder="Month"
+            value={mes}
+            onChange={(e) => {
+              setMes(e.target.value)
+              validarCampo("mes", e.target.value)  
+            }}
+            className = {erro.mes ? "input-field erro" : "input-field"}
+          />
+          {erro.mes && <span className="erro-message">{erro.mes}</span>}
+        </div>
+        <div className="input-Item">
+          <label className={erro.ano ? "label-erro" : ""}>YEAR</label>
+          <input
+            type="text"
+            placeholder="Year"
+            value={ano}
+            onChange={(e) => {
+              setAno(e.target.value)
+              validarCampo("ano", e.target.value)
+            }}
+            className = {erro.ano ? "input-field erro" : "input-field"}
+          />
+          {erro.ano && <span className="erro-message">{erro.ano}</span>}
+        </div>
       </div>
+      <div className="Botao-container">
+        <div className="linha"></div>
+        <button onClick={calcularIdade} className="calcular-button" disabled={!validarFormulario()}></button>
+      </div>
+      {idade && (
+        <div className="resultado-container">
+          <p><span className="Idade">{idade.anos}</span> years</p>
+          <p><span className="Idade">{idade.meses}</span> months</p>
+          <p><span className="Idade">{idade.dias}</span> days</p>
+        </div>
+      )}
     </div>
   );
 }
